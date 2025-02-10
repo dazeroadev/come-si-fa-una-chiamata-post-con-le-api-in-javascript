@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Fetch metodo POST</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+
+		<form id="postForm">
+			<label for="title">Titolo dell'articolo</label>
+			<input type="text" id="title" name="title" required>
+			<p>La mucca viola</p>
+
+			<label for="body">Testo dell'articolo</label>
+			<textarea id="body" name="body" required></textarea>
+			<p>La mucca viola è bella</p>
+
+			<button type="submit">Invia l'articolo al server</button>
+		</form>
+
+		<div id="message"></div>
+
+		<script>
+			const postFormElement = document.getElementById('postForm');
+			const messageElement = document.getElementById('message');
+			const titleElement = document.getElementById('title');
+			const bodyElement = document.getElementById('body');
+
+			postFormElement.addEventListener('submit', function (event) {
+				event.preventDefault();
+
+				const postData = {
+					userId: new Date().getTime(),
+					title: title.value,
+					body: body.value
+				};
+
+				fetch("https://jsonplaceholder.typicode.com/posts", {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(postData),
+				})
+				.then(response => response.json())
+				.then(data => {
+					if(data.id) {
+						messageElement.innerHTML = `<span class="positive">Articolo caricato!</span>`;
+					} else {
+						messageElement.innerHTML = `<span class="negative">Errore nel caricamento!</span>`;
+					}
+					console.log(data)
+				})
+				.catch(error => console.log(error))
+
+				// console.log(postData);
+			});
+		</script>
+	</body>
+
+</html>
